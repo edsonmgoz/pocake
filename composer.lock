@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b0d60e640664b8f1a496ccc95dfee859",
-    "content-hash": "5a6e0241c2ad93c131269a9e6f051a64",
+    "hash": "27153fce18d68b9db44f901c5f97e19a",
+    "content-hash": "369970ae0a0484983abe6ac1d4f80abd",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -285,6 +285,56 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2015-06-10 10:35:13"
+        },
+        {
+            "name": "fzaninotto/faker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "de2ed3bbe68254efeff68db60092fc8ed5298055"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/de2ed3bbe68254efeff68db60092fc8ed5298055",
+                "reference": "de2ed3bbe68254efeff68db60092fc8ed5298055",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "ext-intl": "*",
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2016-01-08 14:16:18"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -1258,6 +1308,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "fzaninotto/faker": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,
