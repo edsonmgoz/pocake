@@ -24,7 +24,23 @@ class UsersController extends AppController
 
     public function add()
     {
-        echo "agregar usuario";
-        exit();
+        $user = $this->Users->newEntity();
+
+        if($this->request->is('post'))
+        {
+            $user = $this->Users->patchEntity($user, $this->request->data);
+
+            if($this->Users->save($user))
+            {
+                $this->Flash->success('El usuario ha sido creado correctamente.');
+                return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+            }
+            else
+            {
+                $this->Flash->error('El usuario no pudo ser creado. Por favor, intente nuevamente.');
+            }
+        }
+
+        $this->set(compact('user'));
     }
 }
