@@ -10,8 +10,6 @@
                 echo $this->Form->input('last_name', ['label' => 'Apellidos']);
                 echo $this->Form->input('email', ['label' => 'Correo electrónico']);
                 echo $this->Form->input('password', ['label' => 'Contraseña']);
-                echo $this->Form->input('role', ['options' => ['admin' => 'Administrator', 'user' => 'User'], 'label' => 'Rol']);
-                echo $this->Form->input('active', ['label' => 'Activo']);
             ?>
         </fieldset>
         <?= $this->Form->button('Crear') ?>

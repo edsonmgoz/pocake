@@ -11,6 +11,25 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->allow(['add']);
+    }
+
+    public function isAuthorized($user)
+    {
+        if(isset($user['role']) and $user['role'] === 'user')
+        {
+            if(in_array($this->request->action, ['home', 'view', 'logout']))
+            {
+                return true;
+            }
+        }
+
+        return parent::isAuthorized($user);
+    }
+
     public function login()
     {
         if($this->request->is('post'))
@@ -44,10 +63,10 @@ class UsersController extends AppController
         $this->set('users', $users);
     }
 
-    public function view($name)
+    public function view($id)
     {
-        echo "Detalle de usuario " . $name;
-        exit();
+        $user = $this->Users->get($id);
+        $this->set('user', $user);
     }
 
     public function add()
@@ -58,10 +77,13 @@ class UsersController extends AppController
         {
             $user = $this->Users->patchEntity($user, $this->request->data);
 
+            $user->role = 'user';
+            $user->active = 1;
+
             if($this->Users->save($user))
             {
                 $this->Flash->success('El usuario ha sido creado correctamente.');
-                return $this->redirect(['controller' => 'Users', 'action' => 'index']);
+                return $this->redirect(['controller' => 'Users', 'action' => 'login']);
             }
             else
             {
