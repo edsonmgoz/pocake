@@ -30,63 +30,37 @@ class UsersTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
-
-        $this->hasMany('Bookmarks', [
-            'foreignKey' => 'user_id'
-        ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
     public function validationDefault(Validator $validator)
     {
         $validator
             ->add('id', 'valid', ['rule' => 'numeric'])
-            ->allowEmpty('id', 'create');
+            ->notEmpty('id', 'create');
 
         $validator
             ->requirePresence('first_name', 'create')
-            ->notEmpty('first_name');
+            ->notEmpty('first_name', 'Rellene este campo');
 
         $validator
             ->requirePresence('last_name', 'create')
-            ->notEmpty('last_name');
+            ->notEmpty('last_name', 'Rellene este campo');
 
         $validator
-            ->add('email', 'valid', ['rule' => 'email'])
+            ->add('email', 'valid', ['rule' => 'email', 'message' => 'Ingrese un correo electrónico válido.'])
             ->requirePresence('email', 'create')
-            ->notEmpty('email');
+            ->notEmpty('email', 'Rellene este campo');
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
-
-        $validator
-            ->requirePresence('role', 'create')
-            ->notEmpty('role');
-
-        $validator
-            ->add('active', 'valid', ['rule' => 'boolean'])
-            ->requirePresence('active', 'create')
-            ->notEmpty('active');
+            ->notEmpty('password', 'Rellene este campo');
 
         return $validator;
     }
 
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['email'], 'Ya existe un usuario con este correo electrónico.'));
         return $rules;
     }
 
