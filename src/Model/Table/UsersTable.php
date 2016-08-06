@@ -53,7 +53,7 @@ class UsersTable extends Table
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password', 'Rellene este campo');
+            ->notEmpty('password', 'Rellene este campo', 'create');
 
         return $validator;
     }
@@ -71,5 +71,11 @@ class UsersTable extends Table
             ->where(['Users.active' => 1]);
 
         return $query;
+    }
+
+    public function recoverPassword($id)
+    {
+        $user = $this->get($id);
+        return $user->password;
     }
 }
