@@ -45,6 +45,11 @@ class UsersController extends AppController
                 $this->Flash->error('Datos son invalidos, por favor intente nuevamente', ['key' => 'auth']);
             }
         }
+
+        if ($this->Auth->user())
+        {
+            return $this->redirect(['controller' => 'Users', 'action' => 'home']);
+        }
     }
 
     public function logout()
@@ -113,5 +118,21 @@ class UsersController extends AppController
         }
 
         $this->set(compact('user'));
+    }
+
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        $user = $this->Users->get($id);
+
+        if ($this->Users->delete($user))
+        {
+            $this->Flash->success('El usuario ha sido eliminado.');
+        }
+        else
+        {
+            $this->Flash->error('El usuario no pudo ser eliminado. Por favor, intente nuevamente.');
+        }
+        return $this->redirect(['action' => 'index']);
     }
 }
