@@ -30,6 +30,10 @@ class UsersTable extends Table
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->hasMany('Bookmarks', [
+            'foreignKey' => 'user_id'
+        ]);
     }
 
     public function validationDefault(Validator $validator)
