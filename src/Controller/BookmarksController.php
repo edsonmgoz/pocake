@@ -15,9 +15,19 @@ class BookmarksController extends AppController
     {
         if(isset($user['role']) and $user['role'] === 'user')
         {
-            if(in_array($this->request->action, ['add', 'index', 'edit', 'delete']))
+            if(in_array($this->request->action, ['add', 'index']))
             {
                 return true;
+            }
+
+            if (in_array($this->request->action, ['edit', 'delete']))
+            {
+                $id = $this->request->params['pass'][0];
+                $bookmark = $this->Bookmarks->get($id);
+                if ($bookmark->user_id == $user['id'])
+                {
+                    return true;
+                }
             }
         }
 
@@ -72,21 +82,22 @@ class BookmarksController extends AppController
      */
     public function edit($id = null)
     {
-        $bookmark = $this->Bookmarks->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $bookmark = $this->Bookmarks->get($id);
+        if ($this->request->is(['patch', 'post', 'put']))
+        {
             $bookmark = $this->Bookmarks->patchEntity($bookmark, $this->request->data);
-            if ($this->Bookmarks->save($bookmark)) {
-                $this->Flash->success(__('The bookmark has been saved.'));
+            $bookmark->user_id = $this->Auth->user('id');
+            if ($this->Bookmarks->save($bookmark))
+            {
+                $this->Flash->success('El enlace ha sido actualizado.');
                 return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The bookmark could not be saved. Please, try again.'));
+            }
+            else
+            {
+                $this->Flash->error('El enlace no pudo ser eliminado. Por favor, intente nuevamente');
             }
         }
-        $users = $this->Bookmarks->Users->find('list', ['limit' => 200]);
-        $this->set(compact('bookmark', 'users'));
-        $this->set('_serialize', ['bookmark']);
+        $this->set(compact('bookmark'));
     }
 
     /**
@@ -100,10 +111,13 @@ class BookmarksController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $bookmark = $this->Bookmarks->get($id);
-        if ($this->Bookmarks->delete($bookmark)) {
-            $this->Flash->success(__('The bookmark has been deleted.'));
-        } else {
-            $this->Flash->error(__('The bookmark could not be deleted. Please, try again.'));
+        if ($this->Bookmarks->delete($bookmark))
+        {
+            $this->Flash->success('El enlace ha sido eliminado');
+        }
+        else
+        {
+            $this->Flash->error('El enlace no pudo ser eliminado. Por favor, intente nuevamente.');
         }
         return $this->redirect(['action' => 'index']);
     }
